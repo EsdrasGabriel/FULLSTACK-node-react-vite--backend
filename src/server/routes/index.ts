@@ -11,6 +11,4 @@ router.post("/teste", (req, res) => {
     return res.status(StatusCodes.UNAUTHORIZED).json(req.body);
 });
 
-
-
 export { router };
