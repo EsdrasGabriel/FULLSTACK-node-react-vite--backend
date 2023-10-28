@@ -1,5 +1,4 @@
 import { Router } from "express";
-import { StatusCodes } from "http-status-codes";
 
 import { cidadesController } from "./../controllers";
 
@@ -9,6 +8,10 @@ router.get("/", (req, res) => {
     return res.send("Olá Dev!");
 });
 
-router.post("/cidades", cidadesController.create);
+router.post(
+    "/cidades",
+    cidadesController.createValidation,
+    cidadesController.create
+);
 
 export { router };
