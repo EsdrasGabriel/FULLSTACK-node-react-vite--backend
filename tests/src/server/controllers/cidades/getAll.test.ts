@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { testServer } from "../jest.setup";
+import { testServer } from "../../../../jest.setup";
 
 describe("Cidades - Get All", () => {
     it ("Buscar todos os registros", async () => {

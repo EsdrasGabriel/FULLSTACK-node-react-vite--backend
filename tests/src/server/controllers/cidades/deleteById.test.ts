@@ -1,5 +1,5 @@
 import { StatusCodes } from "http-status-codes";
-import { testServer } from "../jest.setup";
+import { testServer } from "../../../../jest.setup";
 
 describe("Cidades - Delete By Id", () => {
     it ("Deletar Registro Existente", async () => {
