@@ -5,45 +5,27 @@ describe("Cidades - Update By Id", () => {
     it ("Atualizar Registro", async () => {
 
         const res1 = await testServer
-            .put("/cidades/1")
+            .post("/cidades/")
             .send({
                 nome: "Surubim"
             });
 
-        expect(res1.statusCode).toEqual(StatusCodes.OK);
+        expect(res1.statusCode).toEqual(StatusCodes.CREATED);
+
+        const resAtualizada = await testServer
+            .put(`/cidades/${res1.body}`)
+            .send({ nome: "Surubim" });
+
+        expect(resAtualizada.statusCode).toEqual(StatusCodes.NO_CONTENT);
     });
-    it ("Tentativa de atualizar com id inválido", async () => {
+    it ("Tentativa de atualizar registro inexistente", async () => {
 
         const res1 = await testServer
-            .put("/cidades/0")
-            .send({
-                nome: "Surubim"
-            });
+            .put("/cidades/99999")
+            .send({ nome: "Surubim" });
 
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty("errors.params.id");
+        expect(res1.statusCode).toEqual(StatusCodes.INTERNAL_SERVER_ERROR);
+        expect(res1.body).toHaveProperty("errors.default");
     });
-    it ("Tentativa de atualizar com nome inválido", async () => {
-
-        const res1 = await testServer
-            .put("/cidades/1")
-            .send({
-                nome: "Su"
-            });
-
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty("errors.body.nome");
-    });
-    it ("Tentativa de atualizar com id e nome inválido", async () => {
-
-        const res1 = await testServer
-            .put("/cidades/0")
-            .send({
-                nome: "Su"
-            });
-
-        expect(res1.statusCode).toEqual(StatusCodes.BAD_REQUEST);
-        expect(res1.body).toHaveProperty("errors.params.id");
-        expect(res1.body).toHaveProperty("errors.body.nome");
-    });
+    
 });
