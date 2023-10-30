@@ -2,8 +2,10 @@ import { Request, Response } from "express";
 import * as yup from "yup";
 import { validation } from "../../shared/middleware";
 import { StatusCodes } from "http-status-codes";
+import { cidadesProvider } from "../../database/providers/cidades";
 
 interface IQueryProps {
+    id?: number;
     page?: number;
     limit?: number;
     filter?: string;
@@ -11,6 +13,7 @@ interface IQueryProps {
 
 export const getAllValidation = validation((getSchema) => ({
     query: getSchema<IQueryProps>(yup.object().shape({
+        id: yup.number().integer().optional().default(0),
         page: yup.number().optional().moreThan(0),
         limit: yup.number().optional().moreThan(0),
         filter: yup.string().optional(),
@@ -18,13 +21,30 @@ export const getAllValidation = validation((getSchema) => ({
 }));
 
 export const getAll = async (req: Request<{}, {}, {}, IQueryProps>, res: Response) => {
-    res.setHeader("access-control-expose-headers", "x-total-count");
-    res.setHeader("x-total-count", 1);
+    const result = await cidadesProvider.getAll(
+        req.query.page || 1,
+        req.query.limit || 10,
+        req.query.filter || "",
+        (Number(req.query.id))
+    );
+    const count = await cidadesProvider.count(req.query.filter);
 
-    return res.status(StatusCodes.OK).json([
-        {
-            id: 1,
-            nome: "Surubim"
-        }
-    ]);
+    if (result instanceof Error) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: result.message
+            }
+        });
+    } else if ( count instanceof Error) {
+        return res.status(StatusCodes.BAD_REQUEST).json({
+            errors: {
+                default: count.message
+            }
+        });
+    }
+
+    res.setHeader("access-control-expose-headers", "x-total-count");
+    res.setHeader("x-total-count", count);
+    
+    return res.status(StatusCodes.OK).json(result);
 };
