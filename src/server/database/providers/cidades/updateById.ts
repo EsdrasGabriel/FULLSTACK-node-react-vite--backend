@@ -10,10 +10,10 @@ export const updateById = async (id: number, cidade: Omit<ICidade, "id">): Promi
 
         if (result > 0) return;
 
-        return Error("Erro ao atualizar registro");
+        return new Error("Erro ao atualizar registro");
     } catch (err) {
         console.log(err);
-        return Error("Erro ao atualizar registro");
+        return new Error("Erro ao atualizar registro");
     }
     
 };

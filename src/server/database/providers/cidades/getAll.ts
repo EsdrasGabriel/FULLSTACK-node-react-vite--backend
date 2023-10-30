@@ -23,6 +23,6 @@ export const getAll = async (page: number, limit: number, filter: string, id = 0
         return result;
     } catch (err) {
         console.log(err);
-        return Error("Erro ao tentar achar registros");
+        return new Error("Erro ao tentar achar registros");
     }
 };
