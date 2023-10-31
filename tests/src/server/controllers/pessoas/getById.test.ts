@@ -1,7 +1,7 @@
 import { StatusCodes } from "http-status-codes";
 import { testServer } from "../../../../jest.setup";
 
-describe("Cidades - Get By Id", () => {
+describe("Pessoas - Get By Id", () => {
     let cidadeId: number | undefined = undefined;
     beforeAll(async () => {
         const resCidade = await testServer
