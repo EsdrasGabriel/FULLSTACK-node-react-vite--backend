@@ -18,4 +18,3 @@ if (process.env.IS_LOCALHOST !== "true") {
 } else {
     startServer();
 }
-
