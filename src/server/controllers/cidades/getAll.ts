@@ -29,6 +29,8 @@ export const getAll = async (req: Request<{}, {}, {}, IQueryProps>, res: Respons
     );
     const count = await cidadesProvider.count(req.query.filter);
 
+    console.log("idUsuario", req.headers.idUsuario);
+
     if (result instanceof Error) {
         return res.status(StatusCodes.BAD_REQUEST).json({
             errors: {
