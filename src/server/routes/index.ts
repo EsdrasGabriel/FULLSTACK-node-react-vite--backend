@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { cidadesController, pessoasController } from "./../controllers";
+import { cidadesController, pessoasController, usuariosController } from "./../controllers";
 
 const router = Router();
 
@@ -18,5 +18,8 @@ router.get("/pessoas", pessoasController.getAllValidation, pessoasController.get
 router.get("/pessoas/:id", pessoasController.getByIdValidation, pessoasController.getById);
 router.put("/pessoas/:id", pessoasController.updateByIdValidation, pessoasController.updateById);
 router.delete("/pessoas/:id", pessoasController.deleteByIdValidation, pessoasController.deleteById);
+
+router.post("/entrar", usuariosController.signInValidation, usuariosController.signIn);
+router.post("/cadastrar", usuariosController.signUpValidation, usuariosController.signUp);
 
 export { router };
